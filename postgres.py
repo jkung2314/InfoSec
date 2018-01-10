@@ -11,6 +11,7 @@ for i in range(len(rows)):
     domain_user_id = str(rows[i][7])
     domain_user_id = domain_user_id.replace('\u0000","type":"syslog","tags":["campussyslog","_grokparsefailure"]}', "")
     inet_domain = str(rows[i][6])
+    print inet_domain
 
 #for i in rows:
 #    print i
