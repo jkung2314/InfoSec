@@ -14,6 +14,8 @@ print thirty_days
 cur_source = con_source.cursor()
 cur_source.execute("SELECT * FROM ph_user_id_loc")
 rows = cur_source.fetchall()
+
+cur_destination = con_destination.cursor()
 for i in range(len(rows)):
     domain_user_id = "<" + str(rows[i][7]) + ">"
     domain_user_id = domain_user_id.replace('\u0000","type":"syslog","tags":["campussyslog","_grokparsefailure"]}', "")
@@ -23,3 +25,8 @@ for i in range(len(rows)):
     why = "Login from " + inet_domain + " by " + domain_user_id + " on " + creation_time
     added = datetime.now() #current time
     who_id = 10142480 #RANDOM.ORG Random Number
+
+con_source.close()
+cur_source.close()
+con_destination.close()
+cur_destination.close()
