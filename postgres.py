@@ -19,20 +19,22 @@ cur_source.execute("SELECT * FROM ph_user_id_loc")
 rows = cur_source.fetchall()
 
 for i in range(len(rows)):
-    domain_user_id = "<" + str(rows[i][7]) + ">"
-    domain_user_id = domain_user_id.replace('\u0000","type":"syslog","tags":["campussyslog","_grokparsefailure"]}', "")
-    inet_domain = "<" + str(rows[i][6]) + ">"
-    creation_time = "<" + str(rows[i][1]) + ">"
-    cidr = rows[i][10] #ip address
-    why = "Login from " + inet_domain + " by " + domain_user_id + " on " + creation_time
-    added = datetime.now() #current time
-    who_id = 10142480 #RANDOM.ORG Random Number
-    sql = "INSERT INTO bhr_whitelistentry (cidr, why, added, who_id) VALUES (%s, %s, %s, %s)"
-    data = (cidr, why, added, who_id)
-    cur_destination.execute(sql, data)
-    con_destination.commit()
+    if str(rows[i][10]) == "None":
+        continue
+    else:
+        domain_user_id = "<" + str(rows[i][7]) + ">"
+        domain_user_id = domain_user_id.replace('\u0000","type":"syslog","tags":["campussyslog","_grokparsefailure"]}', "")
+        inet_domain = "<" + str(rows[i][6]) + ">"
+        creation_time = "<" + str(rows[i][1]) + ">"
+        cidr = rows[i][10] #ip address
+        why = "Login from " + inet_domain + " by " + domain_user_id + " on " + creation_time
+        added = datetime.now() #current time
+        who_id = 10142480 #RANDOM.ORG Random Number
+        sql = "INSERT INTO bhr_whitelistentry (cidr, why, added, who_id) VALUES (%s, %s, %s, %s)"
+        data = (cidr, why, added, who_id)
+        cur_destination.execute(sql, data)
 
-#cur_destination.commit()
+con_destination.commit()
 con_source.close()
 cur_source.close()
 con_destination.close()
