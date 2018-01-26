@@ -9,5 +9,4 @@ postgres.py - A script that formats specified fields in a database and places ea
 
 Validation:
     ldapServer.py - A python class that connects to UCSC's LDAP authentication server.
-
-    validation.py - A script that parses credential dumps and compares them with UCSC's LDAP authentication server and prior dumps to determine if further action is required.
+    validation.py - A script that parses credential dumps and compares them with UCSC's LDAP authentication server and prior dumps to                         determine if further action is required.
