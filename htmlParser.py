@@ -1,3 +1,7 @@
+"""
+    Jonathan Kung <jhkung@ucsc.edu>
+    University of California, Santa Cruz Information Security Team
+"""
 import bs4 as bs
 import csv
 import urllib2
