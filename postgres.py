@@ -1,3 +1,7 @@
+"""
+    Jonathan Kung <jhkung@ucsc.edu>
+    University of California, Santa Cruz Information Security Team
+"""
 import psycopg2 as p
 from datetime import datetime
 import time
