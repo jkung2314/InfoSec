@@ -1,0 +1,4 @@
+*.pyc
+.DS_Store
+compromise_list.txt
+userlist.txt
