@@ -7,7 +7,10 @@ Cisco_ASA_Series_Syslog_Messages.csv - "Cisco ASA Series Syslog Messages" in CSV
 
 postgres.py - A script that formats specified fields in a database and places each respective field into an ip-whitelist database.
 
-Validation  [![Build Status](https://travis-ci.org/jkung2314/InfoSec.svg?branch=master)](https://travis-ci.org/jkung2314/InfoSec)
+Validation  
+[![Build Status](https://travis-ci.org/jkung2314/InfoSec.svg?branch=master)](https://travis-ci.org/jkung2314/InfoSec)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)]()
 
 Validation -> ldapServer.py - A python class that connects to UCSC's LDAP authentication server.
 
