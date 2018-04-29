@@ -10,9 +10,7 @@ postgres.py - A script that formats specified fields in a database and places ea
 Validation
 [![Build Status](https://travis-ci.org/jkung2314/InfoSec.svg?branch=master)](https://travis-ci.org/jkung2314/InfoSec)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)]()
-
+[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)]()  
 An all-in-one automated program that processes and validates the authenticity of potentially compromised accounts.
-
-Future updates will be published here: https://github.com/ucsc/compromisedaccountdb
+&nbsp;&nbsp;Future updates will be published here: https://github.com/ucsc/compromisedaccountdb
 
