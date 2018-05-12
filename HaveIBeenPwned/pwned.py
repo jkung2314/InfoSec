@@ -96,9 +96,10 @@ open(fName, 'wb').write(r.content)
 fName.close()
 
 #Send json data to kafka
-def kafkaSend(username, row):
+def kafkaSend(username, email, row):
     data = {}
     data['username'] = username
+    data['email'] = email
     data['category'] = 'compromised account'
     data['reason'] = 'Have I Been Pwned - Valid Credentials'
     data['detection_timestamp'] = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
@@ -116,7 +117,9 @@ def Bind(username, password, user, row):
 
     if result == True:
         print ("[{0}] *** Bind Successful: Valid credentials ***".format(username))
-        kafkaSend(username, row)
+        info = ldapObj.uid_search(username)
+        email = info[0][1]['mail'][0]
+        kafkaSend(username, email, row)
     else:
         print ("[{0}] *** Bind Failed: Invalid credentials ***".format(username))
 
@@ -183,7 +186,6 @@ for user in userList:
             password = None
             domain = user.split("@")
             domain = domain[1]
-        kafkaSend(username, row)
         if inDatabase(username, password) == False:
             dumpName = 'Have I Been Pwned'
             dateAdded = None
