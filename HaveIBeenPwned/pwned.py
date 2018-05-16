@@ -57,14 +57,13 @@ msg_id = msg.get('Message-ID')
 subject = msg.get('Subject')
 subject = subject.replace(" ", "_")
 
-print ("PROCESSING <{0}>: <{1}>").format(datetime.datetime.now(), subject)
-
 #Determine if email has been previously processed
 history = open("processed_emails.txt", "r")
 if msg_id in history.read():
     history.close()
     exit(1)
 else:
+    print ("PROCESSING <{0}>: <{1}>").format(datetime.datetime.now(), subject)
     history = open("processed_emails.txt", "a")
     history.write(str(msg_id) + "\n")
     history.close()
@@ -72,7 +71,10 @@ else:
 #Decode and get Pastebin link
 msg = str(msg.get_payload()[0])
 try:
-    code = re.findall(r'<https://pastebin.com/(.*?)>', str(msg))[0]
+    code = re.findall(r'<https://pastebin.com/(.*?)>', str(msg))
+    if len(code) == 0:
+        code = re.findall(r'<https://scrape.pastebin.com/(.*?)>', str(msg))
+    code = code[0]
     M.close()
 except IndexError:
     M.close()
@@ -92,8 +94,9 @@ today = str(date).replace("-", "_")
 #Write to log file
 r = requests.get(url, verify=False)
 fName = "haveibeenpwneddump_" + today + subject + ".log"
-open(fName, 'wb').write(r.content)
-fName.close()
+file = open(fName, 'wb')
+file.write(r.content)
+file.close()
 
 #Send json data to kafka
 def kafkaSend(username, email, row):
