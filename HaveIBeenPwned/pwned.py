@@ -71,16 +71,17 @@ else:
 #Decode and get Pastebin link
 msg = str(msg.get_payload()[0])
 try:
-    code = re.findall(r'<https://pastebin.com/(.*?)>', str(msg))
-    if len(code) == 0:
-        code = re.findall(r'<https://scrape.pastebin.com/(.*?)>', str(msg))
-    code = code[0]
+    link = re.findall('(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})', str(msg))
+    for i in link:
+        if 'https://scrape.pastebin.com/' in i or 'https://pastebin.com/' in i:
+            code = i
     M.close()
 except IndexError:
     M.close()
     print("Pastebin Link Not Found")
     exit(1)
 
+code = code.rsplit('/', 1)[-1]
 url = 'https://pastebin.com/raw/' + str(code)
 try:
     userList = urllib2.urlopen(url).read()
