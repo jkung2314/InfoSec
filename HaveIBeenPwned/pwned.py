@@ -70,14 +70,15 @@ else:
 
 #Decode and get Pastebin link
 msg = str(msg.get_payload()[0])
-try:
-    link = re.findall('(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})', str(msg))
-    for i in link:
-        if 'https://scrape.pastebin.com/' in i or 'https://pastebin.com/' in i:
-            code = i
-    M.close()
-except IndexError:
-    M.close()
+
+code = None
+link = re.findall('(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})', str(msg))
+for i in link:
+    if 'https://scrape.pastebin.com/' in i or 'https://pastebin.com/' in i:
+        code = i
+M.close()
+
+if code is None:
     print("Pastebin Link Not Found")
     exit(1)
 
