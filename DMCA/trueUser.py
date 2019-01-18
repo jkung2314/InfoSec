@@ -1,13 +1,24 @@
+"""
+    Jonathan Kung <jhkung@ucsc.edu>
+    University of California, Santa Cruz
+
+    Automates the identification of user(s), given an ip and timestamp.
+"""
 import credentials
 import datetime
 import pytz
 from elasticsearch import Elasticsearch
 import json
 import sys
+import ldap
+from ldapServer import ldapServer
 
 class trueUser:
     # Elasticsearch object
     es = None
+
+    # ldap object
+    ldapObj = None
 
     # Get current timezone UTC offset
     pacific_now = datetime.datetime.now(pytz.timezone('US/Pacific'))
@@ -23,6 +34,17 @@ class trueUser:
            # You must have a copy of the CA cert present to use in this code
            ca_certs=credentials.ca_certs
         )
+        # Connect to UCSC ldap server
+        self.ldapObj = ldapServer()
+        self.ldapObj.setServer()
+        try:
+           self.ldapObj.connect()
+           self.ldapObj.bind(credentials.LDAP_USERNAME, credentials.LDAP_PASSWORD)
+        except ldap.INVALID_CREDENTIALS as e:
+           print("Invalid credentials")
+        except Exception as e:
+           print(e)
+
 
     # Searches Elasticsearch for trueIP, given NATTED IP, port, start, and end time
     # Returns trueIP if exists
@@ -109,9 +131,15 @@ class trueUser:
                 macaddress = None
             authsource = data['authsource']
             if username == 'null':
+                userAffiliation = None
                 if macaddress not in macaddressList:
                     macaddressList.append(macaddress)
-            result = [timestamp, username, macaddress, authsource]
+            else:
+                try:
+                    userAffiliation = ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
+                except:
+                    userAffiliation = None
+            result = [timestamp, username, userAffiliation, macaddress, authsource]
             resultsList.append(result)
         return foundUser, foundUsersList, macaddressList, resultsList
 
@@ -158,6 +186,10 @@ class trueUser:
                             city = None
                             region = None
                         authsource = data['authsource']
-                        result = [timestamp, username, realMacaddress, city, region, authsource]
+                        try:
+                            userAffiliation = ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
+                        except:
+                            userAffiliation = None
+                        result = [timestamp, username, userAffiliation, realMacaddress, city, region, authsource]
                         resultsList.append(result)
             return resultsList
