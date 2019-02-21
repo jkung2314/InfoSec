@@ -1,8 +1,8 @@
-es_server = 'itsec-prod-velk-1.ucsc.edu'
-es_port = 31000
-es_username = 'securityautomation'
-es_password = 'fjFv9usK[&!{eW_3'
-ca_certs = '/Users/jonathan/Desktop/InfoSec/DMCA/ca.crt'
+es_server = ''
+es_port =
+es_username = ''
+es_password = ''
+ca_certs = ''
 
 LDAP_USERNAME = ''
 LDAP_PASSWORD = ''
