@@ -45,7 +45,7 @@ if len(user[3]) != 0:
 
 # If user is not found, search through macaddress list (user[2] contains list)
 if user[0] != True:
-    # Specify timerange and correctly format for user query (-4 hours from infringementTime and +2 hours)
+    # Specify timerange and correctly format for macaddress query (-7 days from infringementTime)
     macaddrQueryStartTime = datetime.datetime.strftime(infringementTime - datetime.timedelta(minutes=10080), "%Y-%m-%d %H:%M")
     macaddrQueryEndTime = datetime.datetime.strftime(infringementTime, "%Y-%m-%d %H:%M")
 

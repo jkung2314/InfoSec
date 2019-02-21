@@ -76,13 +76,12 @@ class trueUser:
             }
           }
         })
-        results = self.es.search(index='logstash-netflow-*', body=netflowQuery, size=2000)
+        results = self.es.search(index='netflow-*', body=netflowQuery, size=2000)
         if len(results['hits']['hits']) == 0:
-            print("True IP not found, terminating...")
-            sys.exit(0)
+            trueIP = None
         else:
             trueIP = results['hits']['hits'][0]['_source']['srcip']
-            return trueIP
+        return trueIP
 
     # Searches Elasticsearch for user, given trueIP, start, and end time
     # Prints all authentications with matching ip and timerange
@@ -136,10 +135,10 @@ class trueUser:
                     macaddressList.append(macaddress)
             else:
                 try:
-                    userAffiliation = ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
+                    userAffiliation = self.ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
                 except:
                     userAffiliation = None
-            result = [timestamp, username, userAffiliation, macaddress, authsource]
+            result = [timestamp, username, userAffiliation, macaddress.upper(), authsource]
             resultsList.append(result)
         return foundUser, foundUsersList, macaddressList, resultsList
 
@@ -187,9 +186,9 @@ class trueUser:
                             region = None
                         authsource = data['authsource']
                         try:
-                            userAffiliation = ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
+                            userAffiliation = self.ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
                         except:
                             userAffiliation = None
-                        result = [timestamp, username, userAffiliation, realMacaddress, city, region, authsource]
+                        result = [timestamp, username, userAffiliation, realMacaddress.upper(), city, region, authsource]
                         resultsList.append(result)
             return resultsList
