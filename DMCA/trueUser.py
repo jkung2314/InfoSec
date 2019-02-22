@@ -138,7 +138,9 @@ class trueUser:
                     userAffiliation = self.ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
                 except:
                     userAffiliation = None
-            result = [timestamp, username, userAffiliation, macaddress.upper(), authsource]
+            if macaddress is not None:
+                macaddress = macaddress.upper()
+            result = [timestamp, username, userAffiliation, macaddress, authsource]
             resultsList.append(result)
         return foundUser, foundUsersList, macaddressList, resultsList
 
@@ -177,7 +179,7 @@ class trueUser:
                 if data['macaddress'] == macaddress:
                     if username != 'null':
                         timestamp = data['@timestamp']
-                        realMacaddress = data['macaddress']
+                        realMacaddress = data['macaddress'].upper()
                         try:
                             city = data['geoip']['city_name']
                             region = data['geoip']['region_name']
@@ -189,6 +191,6 @@ class trueUser:
                             userAffiliation = self.ldapObj.uid_search(username)[0][1]['eduPersonAffiliation'][0].decode('utf-8')
                         except:
                             userAffiliation = None
-                        result = [timestamp, username, userAffiliation, realMacaddress.upper(), city, region, authsource]
+                        result = [timestamp, username, userAffiliation, realMacaddress, city, region, authsource]
                         resultsList.append(result)
             return resultsList
